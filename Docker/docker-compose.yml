@@ -1,0 +1,66 @@
+version: "3"
+
+networks:
+  educatm:
+
+volumes:
+  educatm-db:    
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: educatm-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./../:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - educatm
+
+  mysql:
+    image: mysql:latest
+    container_name: educatm-mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - educatm-db:/var/lib/mysql 
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: educatm
+      MYSQL_USER: educatm
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - educatm
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: educatm-php
+    volumes:
+      - ./../:/var/www/html
+    networks:
+      - educatm
+
+  mailtrap:
+    image: eaudeweb/mailtrap
+    container_name: gsm-partner-mailtrap
+    ports:
+      - "8081:80"
+    networks:
+      - educatm
+  
+  beanstalkd:
+    image: schickling/beanstalkd
+    container_name: educatm-beanstalkd
+    networks:
+      - educatm    
