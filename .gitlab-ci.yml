@@ -42,4 +42,5 @@ deploy:
   script:
     - docker-compose -f ./Docker/docker-compose.yml up -d
     - docker-compose -f ./Docker/docker-compose.yml run php composer install --no-dev
+    - docker-compose -f ./Docker/docker-compose.yml run php php artisan key:generate
     - docker-compose -f ./Docker/docker-compose.yml run php php artisan migrate
