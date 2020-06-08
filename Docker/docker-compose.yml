@@ -44,7 +44,7 @@ services:
   php:
     image: dockerhub.cwd.at/docker/php/fpm:7.4.4
     working_dir: /var/www/html
-    user: "1000"
+    user: "${UID}:${GID}"
     container_name: educatm-php
     volumes:
       - ./../:/var/www/html

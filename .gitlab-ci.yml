@@ -4,6 +4,10 @@
 
 before_script:
   - cp .env.example .env
+  - export UID=${UID}
+  - export GID=${GID}
+  - docker-compose -f ./Docker/docker-compose.yml down
+  - docker image prune -f
 
 cache:
     paths:
@@ -36,7 +40,6 @@ deploy:
   tags: 
     - deploy
   script:
-    - docker image prune -f
     - docker-compose -f ./Docker/docker-compose.yml up -d
     - docker-compose -f ./Docker/docker-compose.yml run php composer install --no-dev
     - docker-compose -f ./Docker/docker-compose.yml run php php artisan migrate
