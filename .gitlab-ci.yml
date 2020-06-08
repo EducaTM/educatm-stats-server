@@ -6,8 +6,8 @@ before_script:
   - cp .env.example .env
   - export USR=${UID}
   - export GRP=${GID}
-  - docker-compose -f ./Docker/docker-compose.yml down
-  - docker image prune -f
+  - docker-compose -f ./Docker/production.yml down
+  - docker system prune -f
 
 cache:
     paths:
@@ -19,28 +19,29 @@ stages:
   - test
   - deploy
 
-after_script:
-  - echo "After script section"
-  - echo "For example you might do some cleanup here"
-
-build1:
+build:
   stage: build
   script:
-    - echo "Do your build here"
+    - docker-compose -f ./Docker/production.yml up -d
+    - docker-compose -f ./Docker/production.yml run php composer install --no-dev
+    - docker-compose -f ./Docker/production.yml run php php artisan key:generate
+    - docker-compose -f ./Docker/production.yml run php php artisan down
+    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_host $DB_HOST
+    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_username $DB_USERNAME
+    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_password $DB_PASSWORD
+    - docker-compose -f ./Docker/production.yml run php php artisan env:set app_url $APP_URL
+    - docker-compose -f ./Docker/production.yml run php php artisan migrate
 
-test1:
+test:
   stage: test
   script:
-    - echo "Do a test here"
-    - echo "For example run a test suite"
-
+    - docker-compose -f ./Docker/production.yml run php composer check-platform-reqs
+    - docker-compose -f ./Docker/production.yml run php php artisan test
 
 deploy:
   stage: deploy
   tags: 
     - deploy
   script:
-    - docker-compose -f ./Docker/docker-compose.yml up -d
-    - docker-compose -f ./Docker/docker-compose.yml run php composer install --no-dev
-    - docker-compose -f ./Docker/docker-compose.yml run php php artisan key:generate
-    - docker-compose -f ./Docker/docker-compose.yml run php php artisan migrate
+    - docker-compose -f ./Docker/production.yml run php php artisan env:set app_env production
+    - docker-compose -f ./Docker/production.yml run php php artisan up
