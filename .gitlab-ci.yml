@@ -4,8 +4,8 @@
 
 before_script:
   - cp .env.example .env
-  - export UID=${UID}
-  - export GID=${GID}
+  - export USR=${UID}
+  - export GRP=${GID}
   - docker-compose -f ./Docker/docker-compose.yml down
   - docker image prune -f
 
