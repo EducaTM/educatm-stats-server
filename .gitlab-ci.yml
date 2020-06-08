@@ -33,8 +33,6 @@ test1:
 
 deploy:
   stage: deploy
-  only:
-    - deploy
   tags: 
     - deploy
   script:
