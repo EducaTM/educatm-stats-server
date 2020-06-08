@@ -6,6 +6,7 @@ before_script:
   - cp .env.example .env
   - export USR=${UID}
   - export GRP=${GID}
+  - docker network prune -f
   - docker-compose -f ./Docker/production.yml down
   - docker system prune -f
 
