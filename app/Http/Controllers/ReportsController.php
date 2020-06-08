@@ -8,20 +8,23 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
+    // store the incoming report
     public function store(Request $request){
 
         $this->validate($request, [
-            'hostname' => ['required'],
-            'usage' => ['required']
+            'hostname' => ['required', 'size:20', 'regex:/^educatm-\w+/'],
+            'usage' => ['required', 'array']
         ]);
 
 
-        $client = Client::create([
+        $client = Client::firstOrCreate([
             'hostname' => $request->hostname,
         ]);
         
-        $client->usage()->createMany($request->usage);
+        foreach($request->usage as $usagePerDay){
+            $client->usage()->firstOrCreate(['date' => $usagePerDay['date']], ['usage' => $usagePerDay['usage']]);
+        }
 
-        return response()->json('ok!');
+        return response()->json();
     }
 }

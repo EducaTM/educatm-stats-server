@@ -42,23 +42,15 @@ services:
       - educatm
 
   php:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: dockerhub.cwd.at/docker/php/fpm:7.4.4
+    working_dir: /var/www/html
+    user: "1000"
     container_name: educatm-php
     volumes:
       - ./../:/var/www/html
     networks:
       - educatm
 
-  mailtrap:
-    image: eaudeweb/mailtrap
-    container_name: gsm-partner-mailtrap
-    ports:
-      - "8081:80"
-    networks:
-      - educatm
-  
   beanstalkd:
     image: schickling/beanstalkd
     container_name: educatm-beanstalkd

@@ -11,6 +11,9 @@ RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS \
 
 RUN docker-php-ext-install pdo pdo_mysql
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer global require hirak/prestissimo --no-plugins --no-scripts
+
 
 USER 1000:1000
 
