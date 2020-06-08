@@ -24,25 +24,25 @@ build:
   stage: build
   script:
     - docker-compose -f ./Docker/production.yml up -d
-    - docker-compose -f ./Docker/production.yml run php composer install --no-dev
-    - docker-compose -f ./Docker/production.yml run php php artisan key:generate
-    - docker-compose -f ./Docker/production.yml run php php artisan down
-    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_host $DB_HOST
-    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_username $DB_USERNAME
-    - docker-compose -f ./Docker/production.yml run php php artisan env:set db_password $DB_PASSWORD
-    - docker-compose -f ./Docker/production.yml run php php artisan env:set app_url $APP_URL
-    - docker-compose -f ./Docker/production.yml run php php artisan migrate
+    - docker-compose -f ./Docker/production.yml exec php composer install --no-dev
+    - docker-compose -f ./Docker/production.yml exec php php artisan key:generate
+    - docker-compose -f ./Docker/production.yml exec php php artisan down
+    - docker-compose -f ./Docker/production.yml exec php php artisan env:set db_host $DB_HOST
+    - docker-compose -f ./Docker/production.yml exec php php artisan env:set db_username $DB_USERNAME
+    - docker-compose -f ./Docker/production.yml exec php php artisan env:set db_password $DB_PASSWORD
+    - docker-compose -f ./Docker/production.yml exec php php artisan env:set app_url $APP_URL
+    - docker-compose -f ./Docker/production.yml exec php php artisan migrate
 
 test:
   stage: test
   script:
-    - docker-compose -f ./Docker/production.yml run php composer check-platform-reqs
-    - docker-compose -f ./Docker/production.yml run php php artisan test
+    - docker-compose -f ./Docker/production.yml exec php composer check-platform-reqs
+    - docker-compose -f ./Docker/production.yml exec php php artisan test
 
 deploy:
   stage: deploy
   tags: 
     - deploy
   script:
-    - docker-compose -f ./Docker/production.yml run php php artisan env:set app_env production
-    - docker-compose -f ./Docker/production.yml run php php artisan up
+    - docker-compose -f ./Docker/production.yml exec php php artisan env:set app_env production
+    - docker-compose -f ./Docker/production.yml exec php php artisan up
