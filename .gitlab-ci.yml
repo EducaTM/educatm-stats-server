@@ -12,8 +12,6 @@ stages:
 
 build:
   stage: build
-  tags:
-    - master
   before_script:
   - cp .env.example .env
   - export USR=${UID}
