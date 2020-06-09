@@ -36,7 +36,6 @@ test:
   stage: test
   script:
     - docker-compose -f ./Docker/production.yml exec -T php composer check-platform-reqs
-    - docker-compose -f ./Docker/production.yml exec -T php php artisan test
 
 deploy:
   stage: deploy
