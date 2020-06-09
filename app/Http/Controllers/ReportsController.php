@@ -22,7 +22,7 @@ class ReportsController extends Controller
         ]);
         
         foreach($request->usage as $usagePerDay){
-            $client->usage()->firstOrCreate(['date' => $usagePerDay['date']], ['usage' => $usagePerDay['usage']]);
+            $client->usage()->firstOrCreate(['date' => $usagePerDay['date']], ['time' => $usagePerDay['time']]);
         }
 
         return response()->json();
