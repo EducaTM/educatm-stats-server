@@ -27,6 +27,7 @@ class ReportsController extends Controller
         }
 
         $client->last_active = Carbon::now();
+        $client->last_ip = $request->ip();
 
         $client->save();
 
