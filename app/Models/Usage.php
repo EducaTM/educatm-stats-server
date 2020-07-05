@@ -12,7 +12,6 @@ class Usage extends Model
         'usage'
     ];
 
-    protected $touches = ['client'];
 
     protected $table = 'usage';
 

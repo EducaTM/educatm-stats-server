@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Usage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -24,6 +25,10 @@ class ReportsController extends Controller
         foreach($request->usage as $usagePerDay){
             $client->usage()->firstOrCreate(['date' => $usagePerDay['date']], ['usage' => $usagePerDay['time']]);
         }
+
+        $client->last_active = Carbon::now();
+
+        $client->save();
 
         return response()->json();
     }
