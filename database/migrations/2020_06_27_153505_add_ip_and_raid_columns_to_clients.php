@@ -14,9 +14,9 @@ class AddIpAndRaidColumnsToClients extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->ipAddress('last_ip')->nullable()->after('hostname');
-            $table->json('raid')->nullable()->after('last_ip'); // Remote Access ID; Ex: Anydesk, TeamViewer etc.
-            $table->dateTime('last_active')->nullable()->after('raid');
+            $table->ipAddress('last_ip')->nullable();
+            $table->json('raid')->nullable(); // Remote Access ID; Ex: Anydesk, TeamViewer etc.
+            $table->dateTime('last_active')->nullable();
         });
     }
 
