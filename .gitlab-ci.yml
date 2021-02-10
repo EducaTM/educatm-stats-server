@@ -26,6 +26,7 @@ build:
   script:
     - docker-compose -f ./Docker/production.yml up -d
     - docker-compose -f ./Docker/production.yml exec -T php composer install --no-dev
+    - docker-compose -f ./Docker/production.yml exec -T php npm run prod
     - docker-compose -f ./Docker/production.yml exec -T php php artisan key:generate
     - docker-compose -f ./Docker/production.yml exec -T php php artisan down
     - docker-compose -f ./Docker/production.yml exec -T php php artisan env:set db_host $DB_HOST
