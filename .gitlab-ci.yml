@@ -34,5 +34,6 @@ build:
     - docker-compose -f ./Docker/production.yml exec -T php php artisan env:set app_url $APP_URL
     - docker-compose -f ./Docker/production.yml exec -T php php artisan migrate
     - docker-compose -f ./Docker/production.yml exec -T php php artisan env:set app_env production
+    - docker-compose -f ./Docker/production.yml exec -T php php artisan env:set app_debug false
     - docker-compose -f ./Docker/production.yml exec -T php php artisan up
 
